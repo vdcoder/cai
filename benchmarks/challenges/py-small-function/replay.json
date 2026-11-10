@@ -1,0 +1,115 @@
+{
+ "_comment": "Deterministic scripted replays used only to validate the harness. They are not agent behaviour.",
+ "A": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/textutil.py",
+   "from": "replay_files/solution.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom textutil import slugify\nassert slugify(' Hello,  World! ') == 'hello-world'"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "B": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "append",
+   "path": "src/textutil.py",
+   "content": "# SCRATCH: lower(), regex-collapse, strip('-')\n"
+  },
+  {
+   "op": "write",
+   "path": "src/textutil.py",
+   "from": "replay_files/solution.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom textutil import slugify\nassert slugify(' Hello,  World! ') == 'hello-world'"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "C": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "replace",
+   "path": "src/textutil.py",
+   "old": "    raise NotImplementedError\n",
+   "new": "    # #defer slug_body\n    # lowercase, collapse separators, trim dashes\n    # #end\n"
+  },
+  {
+   "op": "directive",
+   "path": "src/textutil.py",
+   "style": "python_comment",
+   "command": "wait",
+   "content": "A regex substitution handles every separator run in one pass."
+  },
+  {
+   "op": "directive",
+   "path": "src/textutil.py",
+   "style": "python_comment",
+   "command": "evolve",
+   "name": "slug_body",
+   "content": "import re\nreturn re.sub(r\"[^a-z0-9]+\", \"-\", text.lower()).strip(\"-\")"
+  },
+  {
+   "op": "directive",
+   "path": "src/textutil.py",
+   "style": "python_comment",
+   "command": "run",
+   "name": "probe",
+   "content": "from textutil import slugify\nprint(slugify(' Hello,  World! '))"
+  },
+  {
+   "op": "directive",
+   "path": "src/textutil.py",
+   "style": "python_comment",
+   "command": "test",
+   "name": "slug_basic",
+   "content": "from textutil import slugify\nassert slugify('Hello, World!') == 'hello-world'"
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--run",
+    "--test"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--build",
+    "--discard-runs"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "turn"
+  }
+ ]
+}

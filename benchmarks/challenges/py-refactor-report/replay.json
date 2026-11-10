@@ -1,0 +1,98 @@
+{
+ "_comment": "Deterministic scripted replays used only to validate the harness. They are not agent behaviour.",
+ "A": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/report.py",
+   "from": "replay_files/solution.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nimport report\nassert report.render_costs([('rent', 800)]) == 'Rent         |    -800.00'"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "B": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "append",
+   "path": "src/report.py",
+   "content": "# SCRATCH: the ljust/format expression appears five times -> one helper\n"
+  },
+  {
+   "op": "write",
+   "path": "src/report.py",
+   "from": "replay_files/solution.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nimport report\nassert report.render_costs([('rent', 800)]) == 'Rent         |    -800.00'"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "C": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/report.py",
+   "from": "replay_files/c_start.py"
+  },
+  {
+   "op": "directive",
+   "path": "src/report.py",
+   "style": "python_comment",
+   "command": "evolve",
+   "name": "format_row_impl",
+   "content": "def format_row(name, amount):\n    return name.strip().title().ljust(12)[:12] + \" | \" + f\"{amount:>10,.2f}\""
+  },
+  {
+   "op": "directive",
+   "path": "src/report.py",
+   "style": "python_comment",
+   "command": "test",
+   "name": "row_layout",
+   "content": "import report\nassert report.render_costs([('rent', 800)]) == 'Rent         |    -800.00'"
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--test"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--build",
+    "--discard-runs"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "turn"
+  }
+ ]
+}

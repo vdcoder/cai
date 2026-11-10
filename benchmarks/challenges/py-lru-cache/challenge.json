@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "py-lru-cache",
+  "title": "Implement an LRU cache",
+  "category": "python_implementation",
+  "description": "Implement the `LRUCache` class in `src/lru.py` according to its docstring.",
+  "fixture": "fixture",
+  "cai_overlay": "../../overlays/python",
+  "setup": [],
+  "permitted_tools": [
+    "file_edit",
+    "search",
+    "shell"
+  ],
+  "limits": {
+    "trial_timeout_seconds": 900,
+    "grade_timeout_seconds": 60
+  },
+  "grader": {
+    "dir": "grader",
+    "command": [
+      "{python}",
+      "grade.py"
+    ]
+  },
+  "success_criteria": "Hidden behavioural cases (eviction order, refresh on get/put, capacity validation) pass.",
+  "replay": "replay.json"
+}

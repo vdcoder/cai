@@ -1,0 +1,201 @@
+{
+ "_comment": "Deterministic scripted replays used only to validate the harness. They are not agent behaviour.",
+ "A": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/pairs.py",
+   "from": "replay_files/v1.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom pairs import count_pairs\nassert count_pairs([1, 1, 1], 2) == 3, count_pairs([1, 1, 1], 2)\nassert count_pairs([1, 2, 3, 4], 5) == 2"
+   ],
+   "as": "validation",
+   "expect": "fail"
+  },
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/pairs.py",
+   "from": "replay_files/solution.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom pairs import count_pairs\nassert count_pairs([1, 1, 1], 2) == 3, count_pairs([1, 1, 1], 2)\nassert count_pairs([1, 2, 3, 4], 5) == 2"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nimport time\nfrom pairs import count_pairs\nt = time.perf_counter()\ncount_pairs(list(range(200000)), 7)\nassert time.perf_counter() - t < 1.5"
+   ],
+   "as": "experiment",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "B": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "append",
+   "path": "src/pairs.py",
+   "content": "# SCRATCH: complement lookup; careful with duplicates\n"
+  },
+  {
+   "op": "write",
+   "path": "src/pairs.py",
+   "from": "replay_files/v1.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom pairs import count_pairs\nassert count_pairs([1, 1, 1], 2) == 3, count_pairs([1, 1, 1], 2)\nassert count_pairs([1, 2, 3, 4], 5) == 2"
+   ],
+   "as": "validation",
+   "expect": "fail"
+  },
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/pairs.py",
+   "from": "replay_files/solution.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom pairs import count_pairs\nassert count_pairs([1, 1, 1], 2) == 3, count_pairs([1, 1, 1], 2)\nassert count_pairs([1, 2, 3, 4], 5) == 2"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nimport time\nfrom pairs import count_pairs\nt = time.perf_counter()\ncount_pairs(list(range(200000)), 7)\nassert time.perf_counter() - t < 1.5"
+   ],
+   "as": "experiment",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "C": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/pairs.py",
+   "from": "replay_files/c_start.py"
+  },
+  {
+   "op": "directive",
+   "path": "src/pairs.py",
+   "style": "python_comment",
+   "command": "evolve",
+   "name": "single_pass",
+   "content": "seen = set()\ncount = 0\nfor n in nums:\n    if target - n in seen:\n        count += 1\n    seen.add(n)\nreturn count"
+  },
+  {
+   "op": "directive",
+   "path": "src/pairs.py",
+   "style": "python_comment",
+   "command": "run",
+   "name": "duplicates",
+   "content": "from pairs import count_pairs\nassert count_pairs([1, 1, 1], 2) == 3, count_pairs([1, 1, 1], 2)\nassert count_pairs([1, 2, 3, 4], 5) == 2"
+  },
+  {
+   "op": "directive",
+   "path": "src/pairs.py",
+   "style": "python_comment",
+   "command": "run",
+   "name": "speed",
+   "content": "import time\nfrom pairs import count_pairs\nt = time.perf_counter()\ncount_pairs(list(range(200000)), 7)\nassert time.perf_counter() - t < 1.5"
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--run"
+   ],
+   "expect_exit": 1
+  },
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/pairs.py",
+   "from": "replay_files/solution.py"
+  },
+  {
+   "op": "directive",
+   "path": "src/pairs.py",
+   "style": "python_comment",
+   "command": "wait",
+   "content": "A set forgets multiplicity; count complements with a Counter instead."
+  },
+  {
+   "op": "directive",
+   "path": "src/pairs.py",
+   "style": "python_comment",
+   "command": "run",
+   "name": "duplicates_again",
+   "content": "from pairs import count_pairs\nassert count_pairs([1, 1, 1], 2) == 3, count_pairs([1, 1, 1], 2)\nassert count_pairs([1, 2, 3, 4], 5) == 2"
+  },
+  {
+   "op": "directive",
+   "path": "src/pairs.py",
+   "style": "python_comment",
+   "command": "test",
+   "name": "pair_counts",
+   "content": "from pairs import count_pairs\nassert count_pairs([1, 1, 1], 2) == 3, count_pairs([1, 1, 1], 2)\nassert count_pairs([1, 2, 3, 4], 5) == 2"
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--run",
+    "--test"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--build",
+    "--discard-runs"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "turn"
+  }
+ ]
+}

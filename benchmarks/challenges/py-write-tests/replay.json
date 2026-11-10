@@ -1,0 +1,125 @@
+{
+ "_comment": "Deterministic scripted replays used only to validate the harness. They are not agent behaviour.",
+ "A": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "tests/test_intervals.py",
+   "from": "replay_files/test_intervals.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests"
+   ],
+   "as": "test",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "B": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "append",
+   "path": "tests/notes.py",
+   "content": "# SCRATCH: cases -> empty, unsorted, touching, contained\n"
+  },
+  {
+   "op": "write",
+   "path": "tests/test_intervals.py",
+   "from": "replay_files/test_intervals.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests"
+   ],
+   "as": "test",
+   "expect": "pass"
+  },
+  {
+   "op": "write",
+   "path": "tests/notes.py",
+   "content": ""
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "C": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "directive",
+   "path": "src/intervals.py",
+   "style": "python_comment",
+   "command": "run",
+   "name": "touching",
+   "content": "from intervals import merge_intervals\nprint(merge_intervals([[1, 3], [3, 5]]))"
+  },
+  {
+   "op": "directive",
+   "path": "src/intervals.py",
+   "style": "python_comment",
+   "command": "run",
+   "name": "contained",
+   "content": "from intervals import merge_intervals\nprint(merge_intervals([[1, 10], [2, 3]]))"
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--run"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "tests/test_intervals.py",
+   "from": "replay_files/test_intervals.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests"
+   ],
+   "as": "test",
+   "expect": "pass"
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--build",
+    "--discard-runs"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "turn"
+  }
+ ]
+}

@@ -1,0 +1,128 @@
+{
+ "_comment": "Deterministic scripted replays used only to validate the harness. They are not agent behaviour.",
+ "A": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/shop/config.py",
+   "from": "replay_files/config.py"
+  },
+  {
+   "op": "write",
+   "path": "src/shop/pricing.py",
+   "from": "replay_files/pricing.py"
+  },
+  {
+   "op": "write",
+   "path": "src/shop/receipt.py",
+   "from": "replay_files/receipt.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom shop.receipt import render_receipt\nfrom shop.pricing import format_money\nassert format_money(1234.5, 'EUR') == '\\u20ac1,234.50' and format_money(1234.5, 'JPY') == '\\u00a51,234'\nassert render_receipt([('tea', 2.5, 2)], 0.0, currency='EUR') == 'tea x2: \\u20ac5.00\\nTOTAL: \\u20ac5.00'"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "B": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "append",
+   "path": "src/shop/pricing.py",
+   "content": "# SCRATCH: touch config -> pricing -> receipt, defaults stay USD\n"
+  },
+  {
+   "op": "write",
+   "path": "src/shop/config.py",
+   "from": "replay_files/config.py"
+  },
+  {
+   "op": "write",
+   "path": "src/shop/pricing.py",
+   "from": "replay_files/pricing.py"
+  },
+  {
+   "op": "write",
+   "path": "src/shop/receipt.py",
+   "from": "replay_files/receipt.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom shop.receipt import render_receipt\nfrom shop.pricing import format_money\nassert format_money(1234.5, 'EUR') == '\\u20ac1,234.50' and format_money(1234.5, 'JPY') == '\\u00a51,234'\nassert render_receipt([('tea', 2.5, 2)], 0.0, currency='EUR') == 'tea x2: \\u20ac5.00\\nTOTAL: \\u20ac5.00'"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "C": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/shop/config.py",
+   "from": "replay_files/config.py"
+  },
+  {
+   "op": "write",
+   "path": "src/shop/pricing.py",
+   "from": "replay_files/pricing_c_start.py"
+  },
+  {
+   "op": "write",
+   "path": "src/shop/receipt.py",
+   "from": "replay_files/receipt.py"
+  },
+  {
+   "op": "directive",
+   "path": "src/shop/pricing.py",
+   "style": "python_comment",
+   "command": "evolve",
+   "name": "money_body",
+   "content": "if currency not in SUPPORTED_CURRENCIES:\n    raise ValueError(f\"unsupported currency: {currency}\")\nif currency == \"JPY\":\n    return f\"\\u00a5{amount:,.0f}\"\nsymbol = {\"USD\": \"$\", \"EUR\": \"\\u20ac\"}[currency]\nreturn f\"{symbol}{amount:,.2f}\""
+  },
+  {
+   "op": "directive",
+   "path": "src/shop/receipt.py",
+   "style": "python_comment",
+   "command": "test",
+   "name": "currency_threading",
+   "content": "from shop.receipt import render_receipt\nfrom shop.pricing import format_money\nassert format_money(1234.5, 'EUR') == '\\u20ac1,234.50' and format_money(1234.5, 'JPY') == '\\u00a51,234'\nassert render_receipt([('tea', 2.5, 2)], 0.0, currency='EUR') == 'tea x2: \\u20ac5.00\\nTOTAL: \\u20ac5.00'"
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--test"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--build",
+    "--discard-runs"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "turn"
+  }
+ ]
+}

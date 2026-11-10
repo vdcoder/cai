@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "py-optimize-pairs",
+  "title": "Make pair counting scale",
+  "category": "iterative_optimization",
+  "description": "`count_pairs` in `src/pairs.py` is quadratic. Rewrite it so that a list of 200,000 integers is handled in well under one second while returning exactly the same results (duplicates included).",
+  "fixture": "fixture",
+  "cai_overlay": "../../overlays/python",
+  "setup": [],
+  "permitted_tools": [
+    "file_edit",
+    "search",
+    "shell"
+  ],
+  "limits": {
+    "trial_timeout_seconds": 900,
+    "grade_timeout_seconds": 60
+  },
+  "grader": {
+    "dir": "grader",
+    "command": [
+      "{python}",
+      "grade.py"
+    ]
+  },
+  "success_criteria": "Matches a brute-force reference on hidden random inputs and processes 200,000 elements within 2 seconds.",
+  "replay": "replay.json"
+}

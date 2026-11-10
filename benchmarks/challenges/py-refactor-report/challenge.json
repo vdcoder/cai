@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "py-refactor-report",
+  "title": "Extract duplicated row formatting",
+  "category": "multi_function_refactor",
+  "description": "`src/report.py` repeats the same row-formatting expression in three functions. Extract it into one module-level helper `format_row(name, amount)` and make `render_sales`, `render_costs` and `render_summary` use it. The rendered output must not change.",
+  "fixture": "fixture",
+  "cai_overlay": "../../overlays/python",
+  "setup": [],
+  "permitted_tools": [
+    "file_edit",
+    "search",
+    "shell"
+  ],
+  "limits": {
+    "trial_timeout_seconds": 900,
+    "grade_timeout_seconds": 60
+  },
+  "grader": {
+    "dir": "grader",
+    "command": [
+      "{python}",
+      "grade.py"
+    ]
+  },
+  "success_criteria": "Output identical to the original for hidden inputs; format_row exists, is called by all three functions, and the formatting expression occurs exactly once.",
+  "replay": "replay.json"
+}

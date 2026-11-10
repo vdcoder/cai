@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "py-small-function",
+  "title": "Implement slugify",
+  "category": "small_function",
+  "description": "Implement `slugify(text)` in `src/textutil.py` as described by its docstring.",
+  "fixture": "fixture",
+  "cai_overlay": "../../overlays/python",
+  "setup": [],
+  "permitted_tools": [
+    "file_edit",
+    "search",
+    "shell"
+  ],
+  "limits": {
+    "trial_timeout_seconds": 900,
+    "grade_timeout_seconds": 60
+  },
+  "grader": {
+    "dir": "grader",
+    "command": [
+      "{python}",
+      "grade.py"
+    ]
+  },
+  "success_criteria": "All hidden cases for slugify pass.",
+  "replay": "replay.json"
+}

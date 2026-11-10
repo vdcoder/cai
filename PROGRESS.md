@@ -13,9 +13,12 @@ Resume point for work interrupted by context or usage limits.
 - **M4 Persistent tests** — `#test` evolution/drop, `--test [NAME...]`.
 - **M5 Safety and telemetry** — lock + roll-back journal (`txn.py`), optional
   incremental manifest (`manifest.py`), `.cai/stats.jsonl` (`stats.py`).
+- **M6 Benchmark infrastructure** — `src/cai_bench` (manifests, conditions A/B/C,
+  trace format, replay + command agents, isolation, analysis, reports) and ten
+  challenges under `benchmarks/challenges`. Only synthetic replays have been run.
 
 ## Next step
-- M6 Benchmark infrastructure (`src/cai_bench`, `benchmarks/challenges`).
+- M7 Documentation, example project, release check.
 
 ## Known limitations
 - See `docs/LIMITATIONS.md` (written in M7).

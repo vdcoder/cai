@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "py-write-tests",
+  "title": "Write unit tests for merge_intervals",
+  "category": "unit_test_creation",
+  "description": "`src/intervals.py` contains a correct `merge_intervals`. Create `tests/test_intervals.py` (standard `unittest`, runnable with `python -m unittest discover -s tests` from the workspace root) that checks its documented behaviour thoroughly enough to catch plausible implementation mistakes. Do not modify `src/intervals.py`.",
+  "fixture": "fixture",
+  "cai_overlay": "../../overlays/python",
+  "setup": [],
+  "permitted_tools": [
+    "file_edit",
+    "search",
+    "shell"
+  ],
+  "limits": {
+    "trial_timeout_seconds": 900,
+    "grade_timeout_seconds": 60
+  },
+  "grader": {
+    "dir": "grader",
+    "command": [
+      "{python}",
+      "grade.py"
+    ]
+  },
+  "success_criteria": "The tests pass against the reference implementation and fail against each of three hidden faulty variants.",
+  "replay": "replay.json"
+}

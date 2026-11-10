@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "py-parse-duration",
+  "title": "Parse durations strictly",
+  "category": "repeated_failed_experiments",
+  "description": "Implement `parse_duration(text)` in `src/durations.py` exactly as its docstring specifies. Pay attention to the inputs that must be rejected.",
+  "fixture": "fixture",
+  "cai_overlay": "../../overlays/python",
+  "setup": [],
+  "permitted_tools": [
+    "file_edit",
+    "search",
+    "shell"
+  ],
+  "limits": {
+    "trial_timeout_seconds": 900,
+    "grade_timeout_seconds": 60
+  },
+  "grader": {
+    "dir": "grader",
+    "command": [
+      "{python}",
+      "grade.py"
+    ]
+  },
+  "success_criteria": "Hidden valid inputs convert correctly and every hidden invalid input raises ValueError.",
+  "replay": "replay.json"
+}

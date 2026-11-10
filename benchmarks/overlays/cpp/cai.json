@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "project": {
+    "name": "challenge",
+    "include": [
+      {
+        "pattern": "src/**/*.cpp",
+        "style": "c_block"
+      },
+      {
+        "pattern": "src/**/*.h",
+        "style": "c_block"
+      }
+    ]
+  },
+  "runner": {
+    "run_command": [
+      "{python}",
+      "tools/cai_cpp_runner.py"
+    ],
+    "test_command": [
+      "{python}",
+      "tools/cai_cpp_runner.py"
+    ],
+    "timeout_seconds": 60
+  }
+}

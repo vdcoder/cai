@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "py-multifile-currency",
+  "title": "Thread a currency option through three modules",
+  "category": "multi_file_change",
+  "description": "Add multi-currency support to the `shop` package under `src/shop/`:\n1. `config.SUPPORTED_CURRENCIES` must list \"USD\", \"EUR\" and \"JPY\".\n2. `pricing.format_money(amount, currency=\"USD\")`: USD -> `$1,234.50`, EUR -> `\u20ac1,234.50`, JPY -> `\u00a51,235` (no decimals); any currency not in `SUPPORTED_CURRENCIES` raises `ValueError`.\n3. `receipt.render_receipt(items, tax_rate, currency=\"USD\")` formats every amount in that currency.\nExisting call sites without a currency must keep working.",
+  "fixture": "fixture",
+  "cai_overlay": "../../overlays/python",
+  "setup": [],
+  "permitted_tools": [
+    "file_edit",
+    "search",
+    "shell"
+  ],
+  "limits": {
+    "trial_timeout_seconds": 900,
+    "grade_timeout_seconds": 60
+  },
+  "grader": {
+    "dir": "grader",
+    "command": [
+      "{python}",
+      "grade.py"
+    ]
+  },
+  "success_criteria": "Hidden cases covering all three modules pass, including the unchanged default behaviour.",
+  "replay": "replay.json"
+}

@@ -1,0 +1,264 @@
+{
+ "_comment": "Deterministic scripted replays used only to validate the harness. They are not agent behaviour.",
+ "A": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/durations.py",
+   "from": "replay_files/v1.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom durations import parse_duration as p\nassert p('1h30m') == 5400 and p('1h 5m 10s') == 3910\nassert p('45S') == 45 and p('2H') == 7200\nfor bad in ['', '5', 'm5', '-5m', '1.5h']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)\nfor bad in ['1m1h', '1h1h', '5s 1m']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)"
+   ],
+   "as": "validation",
+   "expect": "fail"
+  },
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/durations.py",
+   "from": "replay_files/v2.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom durations import parse_duration as p\nassert p('1h30m') == 5400 and p('1h 5m 10s') == 3910\nassert p('45S') == 45 and p('2H') == 7200\nfor bad in ['', '5', 'm5', '-5m', '1.5h']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)\nfor bad in ['1m1h', '1h1h', '5s 1m']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)"
+   ],
+   "as": "validation",
+   "expect": "fail"
+  },
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/durations.py",
+   "from": "replay_files/solution.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom durations import parse_duration as p\nassert p('1h30m') == 5400 and p('1h 5m 10s') == 3910\nassert p('45S') == 45 and p('2H') == 7200\nfor bad in ['', '5', 'm5', '-5m', '1.5h']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)\nfor bad in ['1m1h', '1h1h', '5s 1m']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "B": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "append",
+   "path": "src/durations.py",
+   "content": "# SCRATCH: findall is too permissive? check the rejection list\n"
+  },
+  {
+   "op": "write",
+   "path": "src/durations.py",
+   "from": "replay_files/v1.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom durations import parse_duration as p\nassert p('1h30m') == 5400 and p('1h 5m 10s') == 3910\nassert p('45S') == 45 and p('2H') == 7200\nfor bad in ['', '5', 'm5', '-5m', '1.5h']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)\nfor bad in ['1m1h', '1h1h', '5s 1m']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)"
+   ],
+   "as": "validation",
+   "expect": "fail"
+  },
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/durations.py",
+   "from": "replay_files/v2.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom durations import parse_duration as p\nassert p('1h30m') == 5400 and p('1h 5m 10s') == 3910\nassert p('45S') == 45 and p('2H') == 7200\nfor bad in ['', '5', 'm5', '-5m', '1.5h']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)\nfor bad in ['1m1h', '1h1h', '5s 1m']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)"
+   ],
+   "as": "validation",
+   "expect": "fail"
+  },
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/durations.py",
+   "from": "replay_files/solution.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom durations import parse_duration as p\nassert p('1h30m') == 5400 and p('1h 5m 10s') == 3910\nassert p('45S') == 45 and p('2H') == 7200\nfor bad in ['', '5', 'm5', '-5m', '1.5h']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)\nfor bad in ['1m1h', '1h1h', '5s 1m']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "C": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/durations.py",
+   "from": "replay_files/c_start.py"
+  },
+  {
+   "op": "directive",
+   "path": "src/durations.py",
+   "style": "python_comment",
+   "command": "evolve",
+   "name": "parse_body",
+   "content": "total = 0\nfor number, unit in re.findall(r\"(\\d+)([hms])\", text):\n    total += int(number) * {\"h\": 3600, \"m\": 60, \"s\": 1}[unit]\nreturn total"
+  },
+  {
+   "op": "directive",
+   "path": "src/durations.py",
+   "style": "python_comment",
+   "command": "run",
+   "name": "basic",
+   "content": "from durations import parse_duration as p\nassert p('1h30m') == 5400 and p('1h 5m 10s') == 3910"
+  },
+  {
+   "op": "directive",
+   "path": "src/durations.py",
+   "style": "python_comment",
+   "command": "run",
+   "name": "uppercase",
+   "content": "from durations import parse_duration as p\nassert p('45S') == 45 and p('2H') == 7200"
+  },
+  {
+   "op": "directive",
+   "path": "src/durations.py",
+   "style": "python_comment",
+   "command": "run",
+   "name": "rejects",
+   "content": "from durations import parse_duration as p\nfor bad in ['', '5', 'm5', '-5m', '1.5h']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)"
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--run"
+   ],
+   "expect_exit": 1
+  },
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/durations.py",
+   "from": "replay_files/v2.py"
+  },
+  {
+   "op": "directive",
+   "path": "src/durations.py",
+   "style": "python_comment",
+   "command": "run",
+   "name": "uppercase",
+   "content": "from durations import parse_duration as p\nassert p('45S') == 45 and p('2H') == 7200"
+  },
+  {
+   "op": "directive",
+   "path": "src/durations.py",
+   "style": "python_comment",
+   "command": "run",
+   "name": "rejects",
+   "content": "from durations import parse_duration as p\nfor bad in ['', '5', 'm5', '-5m', '1.5h']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)"
+  },
+  {
+   "op": "directive",
+   "path": "src/durations.py",
+   "style": "python_comment",
+   "command": "run",
+   "name": "order",
+   "content": "from durations import parse_duration as p\nfor bad in ['1m1h', '1h1h', '5s 1m']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)"
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--run"
+   ],
+   "expect_exit": 1
+  },
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/durations.py",
+   "from": "replay_files/solution.py"
+  },
+  {
+   "op": "directive",
+   "path": "src/durations.py",
+   "style": "python_comment",
+   "command": "wait",
+   "content": "Order and repetition need one anchored pattern with optional groups, not a loop."
+  },
+  {
+   "op": "directive",
+   "path": "src/durations.py",
+   "style": "python_comment",
+   "command": "run",
+   "name": "order",
+   "content": "from durations import parse_duration as p\nfor bad in ['1m1h', '1h1h', '5s 1m']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)"
+  },
+  {
+   "op": "directive",
+   "path": "src/durations.py",
+   "style": "python_comment",
+   "command": "test",
+   "name": "duration_spec",
+   "content": "from durations import parse_duration as p\nassert p('1h30m') == 5400 and p('1h 5m 10s') == 3910\nassert p('45S') == 45 and p('2H') == 7200\nfor bad in ['', '5', 'm5', '-5m', '1.5h']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)\nfor bad in ['1m1h', '1h1h', '5s 1m']:\n    try:\n        p(bad)\n    except ValueError:\n        continue\n    raise AssertionError(bad)"
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--run",
+    "--test"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--build",
+    "--discard-runs"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "turn"
+  }
+ ]
+}

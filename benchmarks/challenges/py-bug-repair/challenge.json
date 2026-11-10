@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "py-bug-repair",
+  "title": "Repair a binary search",
+  "category": "bug_repair",
+  "description": "`find_index` in `src/search.py` sometimes returns -1 for values that are present. Find and fix the bug without changing the function's interface or its O(log n) behaviour.",
+  "fixture": "fixture",
+  "cai_overlay": "../../overlays/python",
+  "setup": [],
+  "permitted_tools": [
+    "file_edit",
+    "search",
+    "shell"
+  ],
+  "limits": {
+    "trial_timeout_seconds": 900,
+    "grade_timeout_seconds": 60
+  },
+  "grader": {
+    "dir": "grader",
+    "command": [
+      "{python}",
+      "grade.py"
+    ]
+  },
+  "success_criteria": "Every element of hidden sorted lists is found at its index; absent values return -1.",
+  "replay": "replay.json"
+}

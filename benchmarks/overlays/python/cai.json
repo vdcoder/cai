@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "project": {
+    "name": "challenge",
+    "include": [
+      {
+        "pattern": "src/**/*.py",
+        "style": "python_comment"
+      }
+    ]
+  },
+  "runner": {
+    "run_command": [
+      "{python}",
+      "tools/cai_runner.py"
+    ],
+    "test_command": [
+      "{python}",
+      "tools/cai_runner.py"
+    ],
+    "timeout_seconds": 30
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "cpp-ring-buffer",
+  "title": "Implement a ring buffer in C++",
+  "category": "cpp_implementation",
+  "description": "Implement the `RingBuffer` member functions declared in `src/ring_buffer.h` inside `src/ring_buffer.cpp` (C++17). Do not change the header.",
+  "fixture": "fixture",
+  "cai_overlay": "../../overlays/cpp",
+  "setup": [],
+  "permitted_tools": [
+    "file_edit",
+    "search",
+    "shell"
+  ],
+  "limits": {
+    "trial_timeout_seconds": 900,
+    "grade_timeout_seconds": 60
+  },
+  "grader": {
+    "dir": "grader",
+    "command": [
+      "{python}",
+      "grade.py"
+    ]
+  },
+  "success_criteria": "A hidden C++ test program compiled against the header and ring_buffer.cpp exits successfully.",
+  "replay": "replay.json",
+  "requires": [
+    "g++"
+  ]
+}

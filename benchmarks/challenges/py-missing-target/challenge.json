@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "py-missing-target",
+  "title": "Implement against stale notes",
+  "category": "missing_target_recovery",
+  "description": "Implement the two unfinished `Inventory` methods in `src/inventory.py` following `NOTES.md`. The notes were written against an older draft and use stale method names; the names in `src/inventory.py` are authoritative and must not change.",
+  "fixture": "fixture",
+  "cai_overlay": "../../overlays/python",
+  "setup": [],
+  "permitted_tools": [
+    "file_edit",
+    "search",
+    "shell"
+  ],
+  "limits": {
+    "trial_timeout_seconds": 900,
+    "grade_timeout_seconds": 60
+  },
+  "grader": {
+    "dir": "grader",
+    "command": [
+      "{python}",
+      "grade.py"
+    ]
+  },
+  "success_criteria": "restock/remove behave as specified in NOTES.md under their authoritative names.",
+  "replay": "replay.json"
+}

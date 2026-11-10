@@ -1,0 +1,122 @@
+{
+ "_comment": "Deterministic scripted replays used only to validate the harness. They are not agent behaviour.",
+ "A": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/lru.py",
+   "from": "replay_files/solution.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom lru import LRUCache\nc = LRUCache(2)\nc.put('a', 1); c.put('b', 2)\nassert c.get('a') == 1\nc.put('c', 3)\nassert c.get('b') is None and c.get('a') == 1 and c.get('c') == 3 and len(c) == 2"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "B": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "append",
+   "path": "src/lru.py",
+   "content": "# SCRATCH: OrderedDict + move_to_end / popitem(last=False)\n"
+  },
+  {
+   "op": "write",
+   "path": "src/lru.py",
+   "from": "replay_files/solution.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom lru import LRUCache\nc = LRUCache(2)\nc.put('a', 1); c.put('b', 2)\nassert c.get('a') == 1\nc.put('c', 3)\nassert c.get('b') is None and c.get('a') == 1 and c.get('c') == 3 and len(c) == 2"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "C": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/lru.py",
+   "from": "replay_files/c_start.py"
+  },
+  {
+   "op": "directive",
+   "path": "src/lru.py",
+   "style": "python_comment",
+   "command": "evolve",
+   "name": "init",
+   "content": "if capacity < 1:\n    raise ValueError(\"capacity must be >= 1\")\nself.capacity = capacity\nself._data = OrderedDict()"
+  },
+  {
+   "op": "directive",
+   "path": "src/lru.py",
+   "style": "python_comment",
+   "command": "evolve",
+   "name": "length",
+   "content": "return len(self._data)"
+  },
+  {
+   "op": "directive",
+   "path": "src/lru.py",
+   "style": "python_comment",
+   "command": "evolve",
+   "name": "put",
+   "content": "self._data[key] = value\nself._data.move_to_end(key)\nif len(self._data) > self.capacity:\n    self._data.popitem(last=False)"
+  },
+  {
+   "op": "directive",
+   "path": "src/lru.py",
+   "style": "python_comment",
+   "command": "evolve",
+   "name": "get",
+   "content": "if key not in self._data:\n    return default\nself._data.move_to_end(key)\nreturn self._data[key]"
+  },
+  {
+   "op": "directive",
+   "path": "src/lru.py",
+   "style": "python_comment",
+   "command": "test",
+   "name": "eviction_order",
+   "content": "from lru import LRUCache\nc = LRUCache(2)\nc.put('a', 1); c.put('b', 2)\nassert c.get('a') == 1\nc.put('c', 3)\nassert c.get('b') is None and c.get('a') == 1 and c.get('c') == 3 and len(c) == 2"
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--test"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--build",
+    "--discard-runs"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "turn"
+  }
+ ]
+}

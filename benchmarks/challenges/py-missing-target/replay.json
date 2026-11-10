@@ -1,0 +1,158 @@
+{
+ "_comment": "Deterministic scripted replays used only to validate the harness. They are not agent behaviour.",
+ "A": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/inventory.py",
+   "from": "replay_files/wrong_names.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom inventory import Inventory\ni = Inventory()\nassert i.restock('bolt', 5) == 5\nassert i.remove('bolt', 5) == 0 and 'bolt' not in i.stock"
+   ],
+   "as": "validation",
+   "expect": "fail"
+  },
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/inventory.py",
+   "from": "replay_files/solution.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom inventory import Inventory\ni = Inventory()\nassert i.restock('bolt', 5) == 5\nassert i.remove('bolt', 5) == 0 and 'bolt' not in i.stock"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "B": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "append",
+   "path": "src/inventory.py",
+   "content": "# SCRATCH: NOTES.md says restock_item/remove_item -- check real names\n"
+  },
+  {
+   "op": "write",
+   "path": "src/inventory.py",
+   "from": "replay_files/wrong_names.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom inventory import Inventory\ni = Inventory()\nassert i.restock('bolt', 5) == 5\nassert i.remove('bolt', 5) == 0 and 'bolt' not in i.stock"
+   ],
+   "as": "validation",
+   "expect": "fail"
+  },
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/inventory.py",
+   "from": "replay_files/solution.py"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom inventory import Inventory\ni = Inventory()\nassert i.restock('bolt', 5) == 5\nassert i.remove('bolt', 5) == 0 and 'bolt' not in i.stock"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "C": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/inventory.py",
+   "from": "replay_files/c_start.py"
+  },
+  {
+   "op": "directive",
+   "path": "src/inventory.py",
+   "style": "python_comment",
+   "command": "evolve",
+   "name": "restock_item",
+   "content": "if qty <= 0:\n    raise ValueError(\"qty must be positive\")\nself.stock[item] = self.stock.get(item, 0) + qty\nreturn self.stock[item]"
+  },
+  {
+   "op": "directive",
+   "path": "src/inventory.py",
+   "style": "python_comment",
+   "command": "evolve",
+   "name": "remove",
+   "content": "if item not in self.stock:\n    raise KeyError(item)\nif qty <= 0 or qty > self.stock[item]:\n    raise ValueError(\"invalid quantity\")\nleft = self.stock[item] - qty\nif left:\n    self.stock[item] = left\nelse:\n    del self.stock[item]\nreturn left"
+  },
+  {
+   "op": "directive",
+   "path": "src/inventory.py",
+   "style": "python_comment",
+   "command": "test",
+   "name": "round_trip",
+   "content": "from inventory import Inventory\ni = Inventory()\nassert i.restock('bolt', 5) == 5\nassert i.remove('bolt', 5) == 0 and 'bolt' not in i.stock"
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--test"
+   ],
+   "expect_exit": 2
+  },
+  {
+   "op": "turn"
+  },
+  {
+   "op": "replace",
+   "path": "src/inventory.py",
+   "old": "# #evolve restock_item\n",
+   "new": "# #evolve restock\n"
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--test"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--build",
+    "--discard-runs"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "turn"
+  }
+ ]
+}

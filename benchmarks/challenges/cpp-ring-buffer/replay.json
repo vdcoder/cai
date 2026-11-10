@@ -1,0 +1,111 @@
+{
+ "_comment": "Deterministic scripted replays used only to validate the harness. They are not agent behaviour.",
+ "A": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/ring_buffer.cpp",
+   "from": "replay_files/solution.cpp"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "g++",
+    "-std=c++17",
+    "-fsyntax-only",
+    "-Isrc",
+    "src/ring_buffer.cpp"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "B": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "append",
+   "path": "src/ring_buffer.cpp",
+   "content": "// SCRATCH: tail index = (head_ + count_) % capacity\n"
+  },
+  {
+   "op": "write",
+   "path": "src/ring_buffer.cpp",
+   "from": "replay_files/solution.cpp"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "g++",
+    "-std=c++17",
+    "-fsyntax-only",
+    "-Isrc",
+    "src/ring_buffer.cpp"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "C": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "write",
+   "path": "src/ring_buffer.cpp",
+   "from": "replay_files/c_start.cpp"
+  },
+  {
+   "op": "directive",
+   "path": "src/ring_buffer.cpp",
+   "style": "c_block",
+   "command": "evolve",
+   "name": "members",
+   "content": "bool RingBuffer::push(int value) {\n    if (full()) return false;\n    data_[(head_ + count_) % data_.size()] = value;\n    ++count_;\n    return true;\n}\n\nbool RingBuffer::pop(int& out) {\n    if (count_ == 0) return false;\n    out = data_[head_];\n    head_ = (head_ + 1) % data_.size();\n    --count_;\n    return true;\n}\n\nstd::size_t RingBuffer::size() const { return count_; }\n\nbool RingBuffer::full() const { return count_ == data_.size(); }"
+  },
+  {
+   "op": "directive",
+   "path": "src/ring_buffer.cpp",
+   "style": "c_block",
+   "command": "run",
+   "name": "wraparound",
+   "content": "#include \"ring_buffer.h\"\n#include <cstdio>\nint main() {\n    RingBuffer rb(2);\n    rb.push(1); rb.push(2);\n    std::printf(\"third push accepted: %d, size: %zu\\n\", (int)rb.push(3), rb.size());\n    int v = 0;\n    rb.pop(v); rb.push(4);\n    int a = 0, b = 0;\n    rb.pop(a); rb.pop(b);\n    return (v == 1 && a == 2 && b == 4 && rb.size() == 0) ? 0 : 1;\n}"
+  },
+  {
+   "op": "directive",
+   "path": "src/ring_buffer.cpp",
+   "style": "c_block",
+   "command": "test",
+   "name": "fifo_order",
+   "content": "#include \"ring_buffer.h\"\n#include <cstdio>\nint main() {\n    RingBuffer rb(2);\n    rb.push(1); rb.push(2);\n    std::printf(\"third push accepted: %d, size: %zu\\n\", (int)rb.push(3), rb.size());\n    int v = 0;\n    rb.pop(v); rb.push(4);\n    int a = 0, b = 0;\n    rb.pop(a); rb.pop(b);\n    return (v == 1 && a == 2 && b == 4 && rb.size() == 0) ? 0 : 1;\n}"
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--run",
+    "--test"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--build",
+    "--discard-runs"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "turn"
+  }
+ ]
+}

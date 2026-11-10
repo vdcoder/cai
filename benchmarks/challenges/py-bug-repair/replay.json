@@ -1,0 +1,150 @@
+{
+ "_comment": "Deterministic scripted replays used only to validate the harness. They are not agent behaviour.",
+ "A": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom search import find_index\nassert find_index([1, 2, 3, 4, 5], 2) == 1, find_index([1, 2, 3, 4, 5], 2)"
+   ],
+   "as": "validation",
+   "expect": "fail"
+  },
+  {
+   "op": "turn"
+  },
+  {
+   "op": "replace",
+   "path": "src/search.py",
+   "old": "hi = mid - 1",
+   "new": "hi = mid"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom search import find_index\nassert find_index([1, 2, 3, 4, 5], 2) == 1, find_index([1, 2, 3, 4, 5], 2)"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "B": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "append",
+   "path": "src/search.py",
+   "content": "# SCRATCH: is hi inclusive or exclusive? len(items) => exclusive\n"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom search import find_index\nassert find_index([1, 2, 3, 4, 5], 2) == 1, find_index([1, 2, 3, 4, 5], 2)"
+   ],
+   "as": "validation",
+   "expect": "fail"
+  },
+  {
+   "op": "turn"
+  },
+  {
+   "op": "replace",
+   "path": "src/search.py",
+   "old": "hi = mid - 1",
+   "new": "hi = mid"
+  },
+  {
+   "op": "shell",
+   "argv": [
+    "{python}",
+    "-c",
+    "import sys; sys.path.insert(0, 'src')\nfrom search import find_index\nassert find_index([1, 2, 3, 4, 5], 2) == 1, find_index([1, 2, 3, 4, 5], 2)"
+   ],
+   "as": "validation",
+   "expect": "pass"
+  },
+  {
+   "op": "replace",
+   "path": "src/search.py",
+   "old": "# SCRATCH: is hi inclusive or exclusive? len(items) => exclusive\n",
+   "new": ""
+  },
+  {
+   "op": "turn"
+  }
+ ],
+ "C": [
+  {
+   "op": "turn"
+  },
+  {
+   "op": "directive",
+   "path": "src/search.py",
+   "style": "python_comment",
+   "command": "run",
+   "name": "repro",
+   "content": "from search import find_index\nassert find_index([1, 2, 3, 4, 5], 2) == 1, find_index([1, 2, 3, 4, 5], 2)"
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--run"
+   ],
+   "expect_exit": 1
+  },
+  {
+   "op": "turn"
+  },
+  {
+   "op": "replace",
+   "path": "src/search.py",
+   "old": "hi = mid - 1",
+   "new": "hi = mid"
+  },
+  {
+   "op": "directive",
+   "path": "src/search.py",
+   "style": "python_comment",
+   "command": "wait",
+   "content": "hi is exclusive, so the upper half must shrink to mid, not mid - 1."
+  },
+  {
+   "op": "directive",
+   "path": "src/search.py",
+   "style": "python_comment",
+   "command": "test",
+   "name": "finds_second_element",
+   "content": "from search import find_index\nassert find_index([1, 2, 3, 4, 5], 2) == 1, find_index([1, 2, 3, 4, 5], 2)"
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--test"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "cai",
+   "args": [
+    "--build",
+    "--discard-runs"
+   ],
+   "expect_exit": 0
+  },
+  {
+   "op": "turn"
+  }
+ ]
+}
