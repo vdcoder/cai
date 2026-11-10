@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cai-core"
+version = "0.1.0"
+description = "CAI: append-oriented source directives for AI coding agents, consolidated deterministically."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+dependencies = []
+
+[project.scripts]
+cai = "cai.cli:main"
+cai-bench = "cai_bench.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
