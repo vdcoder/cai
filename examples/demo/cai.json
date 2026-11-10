@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "project": {
+    "name": "cai_example",
+    "include": [
+      { "pattern": "src/**/*.cpp", "style": "c_block" },
+      { "pattern": "src/**/*.py", "style": "python_comment" },
+      { "pattern": "docs/**/*.md", "style": "html_comment" }
+    ]
+  },
+  "runner": {
+    "run_command": ["{python}", "tools/run_experiment.py"],
+    "test_command": ["{python}", "tools/run_test.py"],
+    "timeout_seconds": 30
+  }
+}

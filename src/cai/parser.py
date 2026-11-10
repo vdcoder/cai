@@ -71,10 +71,18 @@ def dedent(lines: list[str]) -> list[str]:
     return [text[cut:] if text.strip() else "" for text in lines]
 
 
+_TOKENS = tuple("#" + word for word in (*NAMED, "wait", "end"))
+
+
 def parse_text(text: str, rel: str, adapter: Adapter) -> ParsedFile:
-    lines = _LINE_RE.findall(text)
-    newline = "\r\n" if lines and lines[0].endswith("\r\n") else "\n"
+    first_eol = text.find("\n")
+    newline = "\r\n" if first_eol > 0 and text[first_eol - 1] == "\r" else "\n"
     pf = ParsedFile(rel=rel, style=adapter.style, newline=newline)
+    if not any(token in text for token in _TOKENS):  # fast path: nothing directive-like at all
+        if text:
+            pf.segments.append(text)
+        return pf
+    lines = _LINE_RE.findall(text)
     buf: list[str] = []
 
     def error(code: str, msg: str, line: int, command: str | None = None, name: str | None = None) -> None:
