@@ -15,6 +15,22 @@ def format_report(report: dict) -> str:
     for w in report.get("waits", []):
         lines.append(f"#wait {w['file']}:{w['line']}")
         lines.extend("    " + t for t in w["text"].splitlines())
+    for kind in ("runs", "tests"):
+        for r in report.get(kind, []):
+            code = "-" if r["exit_code"] is None else r["exit_code"]
+            cp = "" if r["checkpoint"] is None else f"  checkpoint={r['checkpoint']}"
+            lines.append(f"[{r['kind']}] {r['name']}: {r['status']}  exit={code}  "
+                         f"{r['duration_ms']:.1f}ms{cp}  ({r['file']}:{r['line']})")
+            for stream in ("stdout", "stderr"):
+                text = r[stream].rstrip("\n")
+                if text:
+                    mark = " (truncated)" if r[f"{stream}_truncated"] else ""
+                    lines.append(f"  {stream}{mark}:")
+                    lines.extend("    " + t for t in text.split("\n"))
+        results = report.get(kind)
+        if results:
+            passed = sum(r["status"] == "passed" for r in results)
+            lines.append(f"{kind}: {passed}/{len(results)} passed")
     if report.get("mode") == "check":
         for rel in report.get("would_modify", []):
             lines.append(f"would modify: {rel}")
